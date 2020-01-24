@@ -7,7 +7,7 @@ def unique(data):
 			out += [each]
 	return out
 
-def FormatData(FileName):
+def FormatData(FileName, year, TestSpecies):
 	file = open(FileName, "r")
 
 	species = []
@@ -24,15 +24,15 @@ def FormatData(FileName):
 			i += 1
 			
 		if len(record) == 2 and record[0] != "" and record[1] != "":
-			species += [record[0]]
-			date += [record[1]]
+			if str(year) in record[1] and record[0] == TestSpecies:
+				species += [record[0]]
+				date += [record[1]]
 		else:
 			errors += 1
 			
 	return species, date, errors
 
-
-species, date, errors = FormatData("records-2019-11-07.csv")
-for each in unique(species):
-	print(each + " | " + str(species.count(each)))
-print("\n{} invalid records".format(errors))
+TestSpecies = input("enter species: ")
+for each in range(1980, 2020):
+	species, date, errors = FormatData("records-2019-11-07.csv", each, TestSpecies)
+	print("{} | {}".format(each, len(species)))
